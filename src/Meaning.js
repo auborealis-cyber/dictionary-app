@@ -2,8 +2,6 @@ import React from "react";
 import Synonyms from "./Synonyms";
 
 export default function Meaning(props) {
-  console.log(props.meaning); // Log the meaning to check its structure
-
   const meaning = props.meaning || {}; // Fallback to an empty object if meaning is undefined
 
   return (
