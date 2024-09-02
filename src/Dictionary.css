@@ -21,6 +21,17 @@
 }
 
 .Dictionary .hint {
-  font-size: 11px;
   margin-top: 5px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  color:#5f5c5c;
+}
+button{
+  border-radius: 5px;
+  background-color: #86a8fd;
+  color: aliceblue;
+}
+button:hover{
+  background-color: #6590fe;
 }

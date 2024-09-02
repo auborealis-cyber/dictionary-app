@@ -1,38 +1,70 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Results from "./Results";
-import "./Dictionary.css";
+import Results from "./Results"; 
+import Photos from "./Photos";
+import "./Dictionary.css"
 
-export default function Dictionary() {
-    let [keyword, setKeyword] = useState("");
-    let [results, setResults] = useState({});
+export default function Dictionary(props) {
+  let [keyword, setKeyword] = useState(props.defaultKeyword || "");
+  let [results, setResults] = useState(null);
+  let [photos, setPhotos] = useState(null);
+  let [loading, setLoading] = useState(false);
+  let [error, setError] = useState(null);
 
-    function handleResponse(response) {
-        setResults(response.data);
-    
-    }
+  const apiKey = "4f0tbb34c0ea3deo2dcac0706f4ad715";
 
-    function search(event) {
-      event.preventDefault();
+  const handleResponse = (response) => {
+    setResults(response.data);
+    setLoading(false);
+  };
 
-      //API doc https://www.shecodes.io/learn/apis/dictionary
-      let apiKey = "4f0tbb34c0ea3deo2dcac0706f4ad715";
-      let apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
-      axios.get(apiUrl).then(handleResponse);
-    }
+  const handleImageResponse = (response) => {
+    setPhotos(response.data.photos);
+    setLoading(false);
+  };
 
+  const handleError = (error) => {
+    setError(error.message);
+    setLoading(false);
+  };
 
+  const search = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+ 
+    const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
+    axios.get(apiUrl).then(handleResponse).catch(handleError);
 
-    function handleKeywordChange(event) {
-        setKeyword(event.target.value);
-    }
+    const imageApiUrl = `https://api.shecodes.io/images/v1/search?query=${keyword}&key=${apiKey}`;
+    axios.get(imageApiUrl).then(handleImageResponse).catch(handleError);
+  };
 
-    return (
+  let handleKeywordChange = (event) => {
+    setKeyword(event.target.value);
+  };
+
+  return (
     <div className="Dictionary">
-        <form onSubmit={search}>
-            <input type="search" onChange={handleKeywordChange} />   
-        </form>
-            <Results results={results} />
+      <form onSubmit={search}>
+        <div className="hint">
+          What word would you like to look up?
+          <input
+            type="search"
+            onChange={handleKeywordChange}
+            value={keyword}
+            placeholder="Type a word"
+          />
+          <button type="submit" disabled={loading}>
+            Search
+          </button>
+          <div>Suggested words: yoga, verbose, plant, book</div>
+        </div>
+      </form>
+      {loading && <div>Loading...</div>}
+      {error && <div className="error">Error: {error}</div>}
+      <Results results={results} />
+      <Photos photos={photos} />
     </div>
-    );
+  );
 }

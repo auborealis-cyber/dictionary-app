@@ -24,7 +24,7 @@ export default function Results(props) {
           </div>
         );
     } else {
-        console.log("API response is missing 'meanings' property");
+        console.log("API response is missing 'meanings' or 'phonetics' property");
         return null;
     }
 }

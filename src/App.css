@@ -3,7 +3,12 @@ body {
 }
 
 a {
-  color: #ebf688;
+  color: navy;
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: underline;
 }
 
 .App-header{
