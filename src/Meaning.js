@@ -1,5 +1,6 @@
 import React from "react";
 import Synonyms from "./Synonyms";
+import "./Meaning.css";
 
 export default function Meaning(props) {
   const meaning = props.meaning || {}; // Fallback to an empty object if meaning is undefined
